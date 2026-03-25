@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OrderMapper">
+
+   <resultMap id="orderResultMap"
+      type="com.itwill.shop.order.Order" autoMapping="true">
+      <id column="orders_no" property="ordersNo" />
+      <result column="orders_date" property="ordersDate" />
+      <result column="orders_tot_price" property="ordersTotPrice" />
+      <result column="orders_status" property="ordersStatus" />
+      <result column="member_id" property="memberId" />
+
+   </resultMap>
+
+   <select id="getOrderList"
+           resultType="com.itwill.shop.order.Order"
+           parameterType="hashmap">
+     SELECT
+       o.orders_no           AS ordersNo,
+       o.orders_date         AS ordersDate,
+       o.orders_tot_price    AS ordersTotPrice,
+       o.orders_status       AS ordersStatus,
+       o.member_id           AS memberId,
+
+       COUNT(oi.oi_no)               AS oiCnt,
+       MIN(p.product_img)            AS oiImg,
+       MIN(p.product_name)           AS oiProductName
+
+     FROM orders o
+     LEFT JOIN Order_Item oi
+       ON oi.orders_no = o.orders_no
+     LEFT JOIN product p
+       ON p.product_no = oi.product_no
+
+     WHERE o.member_id = #{memberId}
+	 and o.ORDERS_DATE >sysdate-(30 * #{range})
+     GROUP BY
+       o.orders_no,
+       o.orders_date,
+       o.orders_tot_price,
+       o.orders_status,
+       o.member_id
+
+     ORDER BY o.orders_date DESC
+   </select>
+
+   <select id="getOrderItemList"
+      resultType="com.itwill.shop.order.OrderItem" parameterType="int">
+      SELECT
+          oi.oi_no,
+          oi.oi_price,
+          oi.oi_qty,
+          oi.orders_no,
+          oi.product_no,
+          p.product_img AS p_img,
+          p.product_name AS p_name,
+          o.orders_date AS o_date,
+          o.orders_status as o_status
+      FROM
+          order_item oi
+          JOIN product p ON oi.product_no = p.product_no
+          JOIN orders o ON oi.orders_no = o.orders_no
+       WHERE
+          oi.orders_no = #{ordersNo}
+   </select>
+
+   <select id="getOrderNoseq" resultType="int">
+      SELECT
+      orders_orders_no_SEQ.nextval from dual
+   </select>
+
+   <insert id="saveCartToOrder"
+      parameterType="com.itwill.shop.order.Order">
+      insert into Orders
+      (
+      orders_no,
+      orders_date,
+      orders_tot_price,
+      orders_status,
+      member_id
+      )
+      values(
+      #{ordersNo},
+      #{ordersDate},
+      #{ordersTotPrice},
+      #{ordersStatus},
+      #{memberId}
+      )
+   </insert>
+
+   <insert id="insertOrderItem"
+      parameterType="com.itwill.shop.order.OrderItem">
+      insert into order_Item(
+      oi_no,
+      oi_price,
+      oi_qty,
+      product_no,
+      orders_no
+      )
+      values(
+      order_item_oi_no_SEQ.nextval,
+      (select product_price
+      from product
+      where product_no=#{productNo}),
+      #{oiQty},
+      #{productNo},
+      #{ordersNo}
+      )
+   </insert>
+
+   <insert id="saveProductToOrder"
+      parameterType="com.itwill.shop.order.Order">
+      INSERT INTO Orders (
+      orders_no,
+      orders_date,
+      orders_tot_price,
+      orders_status,
+      member_id
+      ) VALUES (
+      #{ordersNo},
+      #{ordersDate},
+      (select product_price * #{qty}
+      from product
+      where product_no=#{productNo}),
+      #{ordersStatus},
+      #{memberId}
+      )
+   </insert>
+
+   <update id="cancelOrder" parameterType="int">
+      update orders
+      SET
+      orders_status = '취소완료',
+      ORDERS_TOT_PRICE=0
+      WHERE orders_no = #{ordersNo}
+   </update>
+
+ 
+	<update id="deleteOrderItem" parameterType="com.itwill.shop.order.OrderItem">
+	    UPDATE order_item
+	    SET oi_qty = 0
+	    	,oi_price=0
+	    WHERE oi_no = #{oiNo} AND orders_no = #{ordersNo}
+	</update>
+	
+	<update id="deleteOrderAllItem" parameterType="int">
+	    UPDATE order_item
+	    SET oi_qty = 0
+	    	,oi_price=0
+	    WHERE orders_no = #{ordersNo}
+	</update>
+	
+	<update id="updateOrderStatus" parameterType="int">
+	    UPDATE orders
+	    SET orders_status= '부분취소',
+	   		 ORDERS_TOT_PRICE=(select sum(OI_PRICE)
+								from order_Item
+								where orders_no=#{ordersNo})
+	    WHERE orders_no = #{ordersNo}
+	</update>
+
+
+
+</mapper>

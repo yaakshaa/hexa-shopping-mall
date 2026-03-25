@@ -1,0 +1,359 @@
+@charset "UTF-8";
+
+body {
+	margin: 0;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+header {
+	background-color: #333;
+	color: white;
+	padding: 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.left-header {
+	display: flex;
+	align-items: center;
+	gap: 15px; /* 로고와 환영박스 사이 간격 */
+}
+
+header .logo a {
+	font-size: 1.8rem;
+	color: white;
+	text-decoration: none;
+}
+
+header .logo a:hover {
+	color: #ffcc00; /* 마우스 올리면 노란색으로 변경 (원하면 색상 바꿔도 됨) */
+}
+
+.hero {
+	background-color: #f5f5f5;
+	padding: 50px;
+	text-align: center;
+}
+
+nav a {
+	color: white;
+	text-decoration: none;
+}
+
+nav a:hover {
+	color: #ffcc00; /* 마우스 올리면 노란색으로 변경 */
+}
+
+nav {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+.order-link {
+	display: inline-block;
+}
+
+.order-link.hidden {
+	display: none; /* 로그인하지 않으면 숨김 */
+}
+
+/* 로그인 후 버튼이 보이게 하려면, 해당 버튼의 숨김을 해제 */
+nav.logged-in .order-link {
+	display: inline-block;
+}
+
+.welcome-box {
+	background-color: #f0f0f0;
+	color: #333;
+	padding: 5px 12px;
+	border-radius: 12px;
+	font-weight: bold;
+	display: flex; /* inline-block 대신 flex로 */
+	align-items: center;
+	gap: 8px; /* 이름과 '님 환영합니다!' 사이 간격 */
+	white-space: nowrap;
+}
+
+.welcome-box a.member-name {
+	color: #333;
+	text-decoration: none;
+}
+
+.welcome-box a.member-name:hover {
+	color: #0066cc;
+	/*color: #ffcc00; 기존에 쓰던 노란색이 더나으면 변경*/
+}
+
+.order {
+	background-color: #f5f5f5;
+	padding: 30px;
+	text-align: center;
+}
+
+.products {
+	padding: 30px;
+	text-align: center;
+}
+
+.category-list {
+	list-style: none;
+	padding: 0;
+}
+
+.category-list li {
+	display: inline-block;
+	margin: 10px 20px;
+}
+
+.order {
+	background-color: #f5f5f5;
+	padding: 10px;
+	text-align: center;
+}
+
+/* =================== 장바구니 스타일 =================== */
+.cart-container {
+	width: 80%;
+	margin: 30px auto;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+.cart-container h2 {
+	font-size: 24px;
+	margin-bottom: 20px;
+	border-bottom: 2px solid #333;
+	padding-bottom: 10px;
+}
+
+.cart-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+.cart-table th, .cart-table td {
+	border-bottom: 1px solid #ddd;
+	padding: 12px;
+	text-align: center;
+}
+
+.cart-table img {
+	width: 100px;
+	height: auto;
+}
+
+.cart-qty-input {
+	width: 50px;
+	padding: 5px;
+	text-align: center;
+}
+
+.cart-summary {
+	margin-top: 40px;
+	text-align: center;
+}
+
+.total-price {
+	margin-top: -10px;
+	margin-bottom: 30px;
+	font-size: 32px;
+	font-weight: bold;
+	color: #222;
+	text-align: center;
+}
+
+.cart-summary-divider {
+	width: 100%;
+	margin: 20px auto 10px auto;
+	border: none;
+	border-top: 2px solid #ccc;
+}
+
+.cart-actions {
+	display: flex;
+	justify-content: center;
+	gap: 40px;
+	margin-top: 20px;
+	margin-bottom: 60px;
+}
+
+.cart-actions form {
+	display: inline-block;
+}
+
+.cart-actions .cart-button {
+	background-color: #000;
+	color: #fff;
+	padding: 10px 24px;
+	font-size: 16px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.cart-button {
+	background-color: #000; /* 검정 바탕 */
+	color: #fff; /* 흰 글씨 */
+	padding: 6px 12px;
+	font-size: 14px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.cart-button:hover {
+	background-color: #444; /* 마우스 오버 시 회색 */
+}
+
+.cart-empty {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	height: 480px;
+	font-size: 30px;
+	font-weight: bold;
+	color: #999;
+	text-align: center;
+}
+
+footer {
+	background-color: #eee;
+	padding: 20px;
+	text-align: center;
+}
+
+/* =================== 미디어 쿼리 =================== */
+@media ( max-width : 768px) {
+	header {
+		flex-direction: column;
+		align-items: flex-start;
+		padding: 15px;
+	}
+	.left-header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 15px; /* 작은 화면에서 간격을 줄여서 */
+	}
+	.welcome-box {
+		font-size: 14px;
+		gap: 6px; /* 이름과 '님 환영합니다!' 사이 간격 조정 */
+	}
+	nav {
+		flex-direction: column;
+		width: 100%;
+		align-items: flex-start;
+		gap: 12px;
+	}
+	nav a {
+		font-size: 14px;
+	}
+	.cart-container {
+		width: 90%;
+	}
+	.cart-summary {
+		font-size: 14px;
+	}
+	.total-price {
+		font-size: 24px;
+	}
+	.cart-actions {
+		flex-direction: column;
+		align-items: center;
+		gap: 30px; /* 버튼 간 간격 조정 */
+	}
+	.cart-actions .cart-button {
+		width: 100%;
+		padding: 12px;
+		font-size: 14px;
+	}
+}
+
+@media ( max-width : 480px) {
+	.left-header {
+		gap: 8px; /* 너무 좁으면 간격 조정 */
+	}
+	.welcome-box {
+		font-size: 12px;
+	}
+	nav a {
+		font-size: 12px;
+	}
+	.cart-container {
+		width: 100%;
+	}
+	.cart-actions .cart-button {
+		padding: 10px;
+		font-size: 13px;
+	}
+}
+
+/* =================== 주문 성공 화면 스타일 =================== */
+.order-buttons {
+	margin-top: 30px;
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+}
+
+.order-success {
+	text-align: center;
+	padding: 130px 20px 200px 20px; /* 위 60px, 아래 40px 정도면 자연스러워요 */
+	font-size: 20px;
+	color: #333;
+}
+
+.order-success a,
+.order-success a:hover {
+	text-decoration: none;
+}
+
+/* =================== 주문 상세보기 스타일 =================== */
+.btn-link {
+	display: inline-block;
+	padding: 6px 12px;
+	background-color: black;
+	color: white;
+	text-decoration: none;
+	border-radius: 5px;
+	font-weight: bold;
+	transition: background-color 0.3s ease;
+}
+
+.btn-link:hover {
+	background-color: #333;
+}
+
+.btn-link {
+	display: inline-block;
+	padding: 6px 12px;
+	background-color: black;
+	color: white;
+	text-decoration: none;
+	border-radius: 5px;
+	font-weight: bold;
+	transition: background-color 0.3s ease;
+}
+
+.btn-link:hover {
+	background-color: #333;
+}
+
+.btn-link {
+	background-color: #000; /* 검정 바탕 */
+	color: #fff; /* 흰 글씨 */
+	padding: 6px 12px;
+	font-size: 14px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.btn-link:hover {
+	background-color: #333;
+}
