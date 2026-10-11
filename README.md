@@ -51,7 +51,6 @@ Hexa Shopping Mall은 사용자가 의류 상품을 조회하고 쇼핑몰 서�
 ### Backend
 - Java
 - JSP
-- Servlet
 - MyBatis
 
 ### Database
